@@ -66,7 +66,7 @@ export const getAllBorrows = async (
 };
 
 // return borrow by ID
-export const updateBookById = async (
+export const updateBorrowById = async (
   req: Request,
   res: Response,
   next: NextFunction

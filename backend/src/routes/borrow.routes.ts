@@ -3,6 +3,7 @@ import {
   createBorrow,
   getAllBorrows,
   getBorrowSummary,
+  updateBorrowById,
 } from "../controllers/borrow.controllers";
 
 const borrowRoutes = Router();
@@ -10,5 +11,6 @@ const borrowRoutes = Router();
 borrowRoutes.post("/", createBorrow);
 borrowRoutes.get("/", getAllBorrows);
 borrowRoutes.get("/summary", getBorrowSummary);
+borrowRoutes.patch("/:borrowId", updateBorrowById);
 
 export default borrowRoutes;
