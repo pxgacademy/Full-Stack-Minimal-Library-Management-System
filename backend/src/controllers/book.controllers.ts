@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Book } from "../models/book.models";
-import { apiResponse } from "../utils/response";
+import { apiResponse, errorResponse } from "../utils/response";
 
 // create a single book
 export const createBook = async (
@@ -43,6 +43,30 @@ export const getAllBooks = async (
     else result = await Book.find(query).sort({ [sortBy as string]: SOrder });
 
     apiResponse(res, 200, true, "Books retrieved successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// get book by ID
+export const getBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { bookId } = req.params;
+
+  try {
+    const result = await Book.findById(bookId);
+    if (!result) {
+      errorResponse(res, 404, "Book not found", {
+        name: "Error",
+        message: "Book not found",
+      });
+      return;
+    }
+
+    apiResponse(res, 200, true, "Book retrieved successfully", result);
   } catch (error) {
     next(error);
   }
