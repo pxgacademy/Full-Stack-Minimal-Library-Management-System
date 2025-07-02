@@ -11,7 +11,7 @@ const userSchema: Schema<UserInputs> = new Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: true,
+      unique: [true, "Email is already exist"],
       match: [/.+\@.+\..+/, "Please enter a valid email"],
     },
     password: {

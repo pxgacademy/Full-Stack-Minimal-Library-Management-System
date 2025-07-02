@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { errorResponse } from "./utils/response";
 import userRoutes from "./routes/user.routes";
+import bookRoutes from "./routes/book.routes";
 
 const app = express();
 
@@ -10,6 +11,8 @@ app.use(express.json());
 
 // user routes
 app.use("/api/users", userRoutes);
+// book routes
+app.use("/api/books", bookRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res
