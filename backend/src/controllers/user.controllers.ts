@@ -26,6 +26,37 @@ export const createUser = async (
   }
 };
 
+// get a single user by email and password
+export const signInUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body;
+    const result = await User.findOne({ email });
+    if (!result) {
+      errorResponse(res, 404, "User not found", {
+        name: "Error",
+        message: "User not found by this email",
+      });
+      return;
+    }
+
+    if (result?.password !== password) {
+      errorResponse(res, 400, "Invalid credentials", {
+        name: "Error",
+        message: "Invalid credentials",
+      });
+      return;
+    }
+
+    apiResponse(res, 200, true, "User signed-in successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // get book by email
 export const getUserByEmail = async (
   req: Request,
