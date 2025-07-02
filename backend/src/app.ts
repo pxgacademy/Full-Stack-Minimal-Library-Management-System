@@ -1,11 +1,15 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import { errorResponse } from "./utils/response";
+import userRoutes from "./routes/user.routes";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// user routes
+app.use("/api/users", userRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res
