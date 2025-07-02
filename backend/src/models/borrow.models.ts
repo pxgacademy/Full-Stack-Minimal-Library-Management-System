@@ -66,4 +66,16 @@ borrowSchema.pre("save", async function (next) {
   }
 });
 
+borrowSchema.post("findOneAndUpdate", async function (doc, next) {
+  try {
+    if (doc.isReturned)
+      await Book.findByIdAndUpdate(doc.book, {
+        $inc: { copies: doc?.quantity },
+      });
+    next();
+  } catch (error: any) {
+    next(error);
+  }
+});
+
 export const Borrow = model<BorrowBookInputs>("Borrow", borrowSchema);

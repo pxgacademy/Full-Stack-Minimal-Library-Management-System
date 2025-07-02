@@ -93,6 +93,7 @@ export const updateBookById = async (
     const result = await Book.findOneAndUpdate({ _id: id }, body, {
       new: true,
     });
+
     if (!result) {
       errorResponse(res, 404, "Book not found", {
         name: "Error",

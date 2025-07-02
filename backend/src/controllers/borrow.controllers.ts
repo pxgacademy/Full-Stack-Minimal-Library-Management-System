@@ -25,8 +25,7 @@ export const createBorrow = async (
   }
 };
 
-// get all borrows
-// get books //* isReturned=true&sortBy=createdAt&sort=desc&limit=5
+// get all borrows //* isReturned=true&sortBy=createdAt&sort=desc&limit=5
 export const getAllBorrows = async (
   req: Request,
   res: Response,
@@ -61,6 +60,40 @@ export const getAllBorrows = async (
     }
 
     apiResponse(res, 200, true, "Borrow retrieved successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// return borrow by ID
+export const updateBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { borrowId } = req.params;
+  const { isReturned } = req.body;
+
+  try {
+    const id: IDT = checkMongoId(res, borrowId, "Invalid borrow id");
+    if (!id) return;
+
+    const result = await Borrow.findOneAndUpdate(
+      { _id: id },
+      { isReturned },
+      {
+        new: true,
+      }
+    );
+    if (!result) {
+      errorResponse(res, 404, "Borrow not found", {
+        name: "Error",
+        message: "Borrow not found",
+      });
+      return;
+    }
+
+    apiResponse(res, 200, true, "Borrow updated successfully", result);
   } catch (error) {
     next(error);
   }
