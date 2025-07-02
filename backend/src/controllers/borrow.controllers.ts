@@ -25,6 +25,31 @@ export const createBorrow = async (
   }
 };
 
+// get all borrows //* sortBy=quantity&sort=desc&limit=5
+export const getAllBooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { sortBy = "quantity", sort = "desc", limit = undefined } = req.query;
+  const SOrder = sort === "asc" ? 1 : -1;
+  const limitNum = parseInt(limit as string);
+
+  try {
+    let result;
+
+    if (limit)
+      result = await Borrow.find()
+        .sort({ [sortBy as string]: SOrder })
+        .limit(limitNum);
+    else result = await Borrow.find().sort({ [sortBy as string]: SOrder });
+
+    apiResponse(res, 200, true, "Borrow retrieved successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // get borrow summary
 export const getBorrowSummary = async (
   req: Request,
