@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Book } from "../models/book.models";
 import { apiResponse, errorResponse } from "../utils/response";
-import mongoose from "mongoose";
 import { checkMongoId } from "../utils/checkMongoId";
+import { IDT } from "../types";
 
 // create a single book
 export const createBook = async (
@@ -59,6 +59,9 @@ export const getBookById = async (
   const { bookId } = req.params;
 
   try {
+    const id: IDT = checkMongoId(res, bookId, "Invalid book id");
+    if (!id) return;
+
     const result = await Book.findById(bookId);
     if (!result) {
       errorResponse(res, 404, "Book not found", {
@@ -83,10 +86,10 @@ export const updateBookById = async (
   const { bookId } = req.params;
   const body = req.body;
 
-  const id = checkMongoId(res, bookId, "Invalid book id");
-  if (!id) return;
-
   try {
+    const id: IDT = checkMongoId(res, bookId, "Invalid book id");
+    if (!id) return;
+
     const result = await Book.findOneAndUpdate({ _id: id }, body, {
       new: true,
     });
@@ -112,10 +115,10 @@ export const deleteBookById = async (
 ) => {
   const { bookId } = req.params;
 
-  const id = checkMongoId(res, bookId, "Invalid book id");
-  if (!id) return;
-
   try {
+    const id: IDT = checkMongoId(res, bookId, "Invalid book id");
+    if (!id) return;
+
     const result = await Book.findOneAndDelete({ _id: bookId });
     if (!result) {
       errorResponse(res, 404, "Book not found", {
