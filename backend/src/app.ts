@@ -3,6 +3,7 @@ import cors from "cors";
 import { errorResponse } from "./utils/response";
 import userRoutes from "./routes/user.routes";
 import bookRoutes from "./routes/book.routes";
+import borrowRoutes from "./routes/borrow.routes";
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 // book routes
 app.use("/api/books", bookRoutes);
+// borrow routes
+app.use("/api/borrow", borrowRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res
