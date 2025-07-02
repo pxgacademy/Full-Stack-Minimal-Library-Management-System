@@ -37,4 +37,15 @@ const bookSchema = new Schema<BookDocument>(
   }
 );
 
+bookSchema.methods.updateAvailability = function () {
+  this.available = this.copies > 0;
+  return this.save();
+};
+
+bookSchema.post("findOneAndUpdate", async function (doc, next) {
+  doc.available = doc.copies > 0;
+  await doc.save();
+  next();
+});
+
 export const Book = model<BookDocument>("Book", bookSchema);
