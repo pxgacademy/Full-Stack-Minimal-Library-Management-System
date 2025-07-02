@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { apiResponse } from "../utils/response";
+import { apiResponse, errorResponse } from "../utils/response";
 import { Borrow } from "../models/borrow.models";
 import { IDT } from "../types";
 import { checkMongoId } from "../utils/checkMongoId";
@@ -25,13 +25,21 @@ export const createBorrow = async (
   }
 };
 
-// get all borrows //* sortBy=quantity&sort=desc&limit=5
-export const getAllBooks = async (
+// get all borrows
+// get books //* isReturned=true&sortBy=createdAt&sort=desc&limit=5
+export const getAllBorrows = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { sortBy = "quantity", sort = "desc", limit = undefined } = req.query;
+  const {
+    isReturned,
+    sortBy = "quantity",
+    sort = "desc",
+    limit = undefined,
+  } = req.query;
+  const query: Record<string, boolean> = {};
+  if (isReturned) query.isReturned = isReturned === "true" ? true : false;
   const SOrder = sort === "asc" ? 1 : -1;
   const limitNum = parseInt(limit as string);
 
@@ -39,10 +47,18 @@ export const getAllBooks = async (
     let result;
 
     if (limit)
-      result = await Borrow.find()
+      result = await Borrow.find(query)
         .sort({ [sortBy as string]: SOrder })
         .limit(limitNum);
-    else result = await Borrow.find().sort({ [sortBy as string]: SOrder });
+    else result = await Borrow.find(query).sort({ [sortBy as string]: SOrder });
+
+    if (!result) {
+      errorResponse(res, 404, "Borrow not found", {
+        name: "Error",
+        message: "Borrow not found",
+      });
+      return;
+    }
 
     apiResponse(res, 200, true, "Borrow retrieved successfully", result);
   } catch (error) {
@@ -81,6 +97,14 @@ export const getBorrowSummary = async (
         },
       },
     ]);
+
+    if (!result) {
+      errorResponse(res, 404, "Borrow not found", {
+        name: "Error",
+        message: "Borrow not found",
+      });
+      return;
+    }
 
     apiResponse(
       res,

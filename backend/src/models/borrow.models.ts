@@ -20,6 +20,7 @@ const borrowSchema = new Schema<BorrowBookInputs>(
       min: [1, "Quantity must be at least 1"],
     },
     dueDate: { type: Date, required: [true, "Due-date is required"] },
+    isReturned: { type: Boolean, default: false },
   },
   {
     timestamps: true,
