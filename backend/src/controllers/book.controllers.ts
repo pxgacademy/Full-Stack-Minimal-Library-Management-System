@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Book } from "../models/book.models";
 import { apiResponse, errorResponse } from "../utils/response";
 import mongoose from "mongoose";
+import { checkMongoId } from "../utils/checkMongoId";
 
 // create a single book
 export const createBook = async (
@@ -82,17 +83,8 @@ export const updateBookById = async (
   const { bookId } = req.params;
   const body = req.body;
 
-  const id = mongoose.Types.ObjectId.isValid(bookId)
-    ? new mongoose.Types.ObjectId(bookId)
-    : null;
-
-  if (!id) {
-    errorResponse(res, 400, "Invalid book _id", {
-      name: "Error",
-      message: "Invalid book _id",
-    });
-    return;
-  }
+  const id = checkMongoId(res, bookId, "Invalid book id");
+  if (!id) return;
 
   try {
     const result = await Book.findOneAndUpdate({ _id: id }, body, {
@@ -107,6 +99,33 @@ export const updateBookById = async (
     }
 
     apiResponse(res, 200, true, "Book updated successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// delete a book by ID
+export const deleteBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { bookId } = req.params;
+
+  const id = checkMongoId(res, bookId, "Invalid book id");
+  if (!id) return;
+
+  try {
+    const result = await Book.findOneAndDelete({ _id: bookId });
+    if (!result) {
+      errorResponse(res, 404, "Book not found", {
+        name: "Error",
+        message: "Book not found",
+      });
+      return;
+    }
+
+    apiResponse(res, 200, true, "Book deleted successfully", null);
   } catch (error) {
     next(error);
   }
