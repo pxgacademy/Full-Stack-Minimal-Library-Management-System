@@ -8,7 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).send("I am working form assignment-3");
+  res
+    .status(200)
+    .send("I am working form Full-Stack-Minimal-Library-Management-System");
 });
 
 app.use((req: Request, res: Response) => {
