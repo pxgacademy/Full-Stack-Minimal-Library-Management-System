@@ -3,7 +3,8 @@ import { createUser, getUserByEmail } from "../controllers/user.controllers";
 
 const userRoutes = Router();
 
-userRoutes.post("/", createUser);
+userRoutes.post("/signup", createUser);
+// userRoutes.post("/signin", );
 userRoutes.get("/:email", getUserByEmail);
 
 export default userRoutes;

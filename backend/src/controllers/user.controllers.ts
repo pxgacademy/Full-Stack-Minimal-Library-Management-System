@@ -9,6 +9,16 @@ export const createUser = async (
   next: NextFunction
 ) => {
   try {
+    const { email } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      errorResponse(res, 400, "User already exist", {
+        name: "Error",
+        message: "User already exist",
+      });
+      return;
+    }
+
     const result = await User.create(req.body);
     apiResponse(res, 201, true, "User created successfully", result);
   } catch (error) {
