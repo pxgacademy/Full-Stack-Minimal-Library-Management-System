@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Book } from "../models/book.models";
 import { apiResponse, errorResponse } from "../utils/response";
+import mongoose from "mongoose";
 
 // create a single book
 export const createBook = async (
@@ -67,6 +68,45 @@ export const getBookById = async (
     }
 
     apiResponse(res, 200, true, "Book retrieved successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// update a book by ID
+export const updateBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { bookId } = req.params;
+  const body = req.body;
+
+  const id = mongoose.Types.ObjectId.isValid(bookId)
+    ? new mongoose.Types.ObjectId(bookId)
+    : null;
+
+  if (!id) {
+    errorResponse(res, 400, "Invalid book _id", {
+      name: "Error",
+      message: "Invalid book _id",
+    });
+    return;
+  }
+
+  try {
+    const result = await Book.findOneAndUpdate({ _id: id }, body, {
+      new: true,
+    });
+    if (!result) {
+      errorResponse(res, 404, "Book not found", {
+        name: "Error",
+        message: "Book not found",
+      });
+      return;
+    }
+
+    apiResponse(res, 200, true, "Book updated successfully", result);
   } catch (error) {
     next(error);
   }
