@@ -35,6 +35,15 @@ export const bookApi = createApi({
       invalidatesTags: ["BOOK"],
     }),
 
+    updateBook: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/books/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["BOOK"],
+    }),
+
     getBorrowSummary: builder.query({
       query: () => "borrow/summary",
       providesTags: ["BORROW"],
@@ -56,6 +65,7 @@ export const bookApi = createApi({
 export const {
   useGetAllBooksQuery,
   useCreateBookMutation,
+  useUpdateBookMutation,
   useGetBorrowSummaryQuery,
   useCreateBorrowMutation,
 } = bookApi;

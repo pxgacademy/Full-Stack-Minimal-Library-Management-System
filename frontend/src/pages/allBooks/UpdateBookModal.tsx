@@ -30,7 +30,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateBookMutation } from "@/redux/api/baseApi";
+import { useUpdateBookMutation } from "@/redux/api/baseApi";
 import { toast } from "sonner";
 
 const schema = z.object({
@@ -48,7 +48,7 @@ const UpdateBookModal = ({ book }: { book: BookResponse }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [isBookLoading, setIsBookLoading] = useState<boolean>(false);
 
-  const [createBook] = useCreateBookMutation();
+  const [updateBook] = useUpdateBookMutation();
 
   const form = useForm<AddBookFormSchema>({
     resolver: zodResolver(schema),
@@ -66,12 +66,13 @@ const UpdateBookModal = ({ book }: { book: BookResponse }) => {
   const onSubmit = async (data: AddBookFormSchema) => {
     const newBook = {
       ...data,
+      id: book._id,
       available: true,
     };
 
     setIsBookLoading(true);
     try {
-      const res = await createBook(newBook).unwrap();
+      const res = await updateBook(newBook).unwrap();
       if (res.success) toast.success(res.message);
       else toast.error(res.message);
       // eslint-disable-next-line
