@@ -1,3 +1,4 @@
+import bannerImg2 from "@/assets/banner2.jpg";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,6 +23,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Banner from "@/components/Banner";
 
 const schema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -71,7 +73,7 @@ const AddBooks = () => {
 
   return (
     <section>
-      Add Books
+      <Banner img={bannerImg2} text="Add Book" />
       <div className="px-4 mt-12">
         <Form {...form}>
           <form

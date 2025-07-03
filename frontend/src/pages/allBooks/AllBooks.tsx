@@ -21,6 +21,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Eye, ShoppingBag } from "lucide-react";
+import Banner from "@/components/Banner";
 
 const defaultValue = {
   filter: "ALL",
@@ -48,16 +49,8 @@ const AllBooks = () => {
 
   return (
     <section className="w-full mt-12">
-      <div className="w-full max-h-96 overflow-hidden relative flex items-center justify-center ">
-        <img
-          src={bannerImage}
-          alt="banner"
-          className="w-full h-full object-cover"
-        />
-        <div className="text-4xl text-white font-bold absolute bg-black/20 p-2 rounded backdrop-blur-sm">
-          <h2>ALL BOOKS</h2>
-        </div>
-      </div>
+      <Banner img={bannerImage} text="All Books" />
+
       <div className="px-4 mt-6">
         <div className="container mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 max-w-3xl mx-auto gap-x-4 gap-y-2">
