@@ -1,10 +1,10 @@
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { ProfileDropdown } from "./ProfileDropdown";
-import NavLinks from "./NavLinks";
+import { navLinks } from "./navLinks";
 
 const Navbar = () => {
   return (
-    <nav className="w-full bg-gray-100 py-2 shadow-lg px-4">
+    <nav className="w-full bg-gray-200/50 backdrop-blur-xs py-2 shadow px-4 fixed top-0 left-0">
       <div className="container mx-auto flex items-center justify-between">
         <div className="text-xl">
           <Link to="/">
@@ -13,8 +13,12 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-x-4">
-          <div className="flex items-center gap-x-4">
-            <NavLinks />
+          <div className="hidden md:flex items-center gap-x-4">
+            {navLinks.map((l) => (
+              <NavLink key={l.link} to={l.link}>
+                {l.name}
+              </NavLink>
+            ))}
           </div>
           <ProfileDropdown />
         </div>
