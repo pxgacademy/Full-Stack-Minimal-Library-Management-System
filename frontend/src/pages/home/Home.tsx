@@ -1,10 +1,11 @@
 import Navbar from "@/components/navbar/Navbar";
+import { Outlet } from "react-router";
 
 function Home() {
   return (
     <>
       <Navbar />
-      <div className="">ami achi</div>
+      <Outlet />
     </>
   );
 }

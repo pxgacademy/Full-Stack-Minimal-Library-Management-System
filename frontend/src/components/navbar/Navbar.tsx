@@ -4,7 +4,7 @@ import { navLinks } from "./navLinks";
 
 const Navbar = () => {
   return (
-    <nav className="w-full bg-gray-200/50 backdrop-blur-xs py-2 shadow px-4 fixed top-0 left-0">
+    <nav className="w-full bg-gray-50/50 backdrop-blur-md py-2 shadow px-4 fixed top-0 left-0">
       <div className="container mx-auto flex items-center justify-between">
         <div className="text-xl">
           <Link to="/">

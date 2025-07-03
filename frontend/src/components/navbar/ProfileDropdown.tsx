@@ -4,12 +4,8 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
@@ -40,7 +36,8 @@ export function ProfileDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuGroup className="">
+        <DropdownMenuGroup className="border-b">
+          <DropdownMenuLabel>Web Links</DropdownMenuLabel>
           {navLinks.map((l) => (
             <DropdownMenuItem key={l.link} asChild className="cursor-pointer">
               <Link to={l.link}>{l.name}</Link>
