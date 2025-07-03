@@ -24,6 +24,7 @@ import { Eye } from "lucide-react";
 import Banner from "@/components/Banner";
 import AddBorrowModal from "./AddBorrowModal";
 import UpdateBookModal from "./UpdateBookModal";
+import UpdateBookCopiesModal from "./UpdateBookCopiesModal";
 
 const defaultValue = {
   filter: "ALL",
@@ -46,8 +47,6 @@ const AllBooks = () => {
   };
 
   if (isLoading) return <div>Loading</div>;
-
-  console.log(data);
 
   return (
     <section className="w-full mt-12">
@@ -157,8 +156,8 @@ const AllBooks = () => {
                     <TableCell>{book.isbn}</TableCell>
                     <TableCell>{book.author}</TableCell>
                     <TableCell className="text-center">{book.copies}</TableCell>
-                    <TableCell className="text-center">
-                      {book.available ? "🟢" : "🔴"}
+                    <TableCell className="flex justify-center">
+                      <UpdateBookCopiesModal book={book} />
                     </TableCell>
                     <TableCell className="text-center">
                       <AddBorrowModal book={book} />

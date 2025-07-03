@@ -108,6 +108,40 @@ export const updateBookById = async (
   }
 };
 
+// update a book by ID
+export const updateBookCopiesById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { bookId } = req.params;
+  const { copies } = req.body;
+
+  try {
+    const id: IDT = checkMongoId(res, bookId, "Invalid book id");
+    if (!id) return;
+
+    const result = await Book.findOneAndUpdate(
+      { _id: id },
+      {
+        $inc: { copies },
+      }
+    );
+
+    if (!result) {
+      errorResponse(res, 404, "Book not found", {
+        name: "Error",
+        message: "Book not found",
+      });
+      return;
+    }
+
+    apiResponse(res, 200, true, "Book copies updated successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // delete a book by ID
 export const deleteBookById = async (
   req: Request,

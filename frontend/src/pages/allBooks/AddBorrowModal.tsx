@@ -106,7 +106,7 @@ export default function AddBorrowModal({ book }: { book: BookResponse }) {
           <DialogHeader>
             <DialogTitle>Borrow a Book</DialogTitle>
           </DialogHeader>
-          <DialogDescription>
+          <DialogDescription asChild>
             <div>
               <p className="font-semibold text-gray-800">Book Details</p>
               <p>Genre: {book.genre}</p>
