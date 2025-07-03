@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table";
 import { Eye, ShoppingBag } from "lucide-react";
 import Banner from "@/components/Banner";
+import AddBorrowModal from "./AddBorrowModal";
 
 const defaultValue = {
   filter: "ALL",
@@ -158,12 +159,7 @@ const AllBooks = () => {
                       {book.available ? "🟢" : "🔴"}
                     </TableCell>
                     <TableCell className="text-center">
-                      <button
-                        className="cursor-pointer disabled:cursor-not-allowed text-gray-600"
-                        disabled={!book.available}
-                      >
-                        <ShoppingBag size={18} />
-                      </button>
+                      <AddBorrowModal book={book} />
                     </TableCell>
                     <TableCell className="text-center">
                       <button className="cursor-pointer text-gray-600">

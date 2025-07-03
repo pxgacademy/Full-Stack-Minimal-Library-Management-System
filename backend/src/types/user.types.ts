@@ -5,3 +5,11 @@ export interface UserInputs extends Document {
   email: string;
   password: string;
 }
+
+export interface UserResponse {
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

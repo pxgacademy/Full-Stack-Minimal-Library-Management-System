@@ -31,3 +31,23 @@ export interface BookResponse {
   createdAt: Date;
   updatedAt: Date;
 }
+
+//
+
+export interface BorrowBookInputs {
+  user: string;
+  book: string;
+  quantity: number;
+  dueDate: Date;
+  isReturned: boolean;
+}
+
+export interface BorrowBookResponse {
+  _id: string;
+  user: string;
+  book: string | BookResponse;
+  quantity: number;
+  dueDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
