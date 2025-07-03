@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Banner from "@/components/Banner";
-import { useCreateBookMutation } from "@/redux/api/bookApi";
+import { useCreateBookMutation } from "@/redux/api/baseApi";
 import { toast } from "sonner";
 
 const schema = z.object({

@@ -51,3 +51,11 @@ export interface BorrowBookResponse {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface BorrowSummary {
+  totalQuantity: number;
+  book: {
+    title: string;
+    isbn: string;
+  };
+}

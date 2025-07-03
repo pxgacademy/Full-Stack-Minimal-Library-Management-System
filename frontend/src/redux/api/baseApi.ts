@@ -10,7 +10,7 @@ export interface QueryParams {
 export const bookApi = createApi({
   reducerPath: "bookApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
-  tagTypes: ["BOOK"],
+  tagTypes: ["BOOK", "BORROW"],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
       query: ({ filter, sortBy, sort, limit }: QueryParams) => {
@@ -35,13 +35,18 @@ export const bookApi = createApi({
       invalidatesTags: ["BOOK"],
     }),
 
+    getBorrowSummary: builder.query({
+      query: () => "borrow/summary",
+      providesTags: ["BORROW"],
+    }),
+
     createBorrow: builder.mutation({
       query: (body) => ({
         url: "/borrow",
         method: "POST",
         body,
       }),
-      invalidatesTags: ["BOOK"],
+      invalidatesTags: ["BOOK", "BORROW"],
     }),
   }),
 
@@ -51,5 +56,6 @@ export const bookApi = createApi({
 export const {
   useGetAllBooksQuery,
   useCreateBookMutation,
+  useGetBorrowSummaryQuery,
   useCreateBorrowMutation,
 } = bookApi;

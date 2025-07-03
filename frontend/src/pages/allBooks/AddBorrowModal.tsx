@@ -30,14 +30,8 @@ import { Calendar } from "@/components/ui/calendar";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { BookResponse, BorrowBookInputs } from "@/types";
-import { useCreateBorrowMutation } from "@/redux/api/bookApi";
+import { useCreateBorrowMutation } from "@/redux/api/baseApi";
 import { toast } from "sonner";
-
-//* user: string;
-//* book: string;
-//* quantity: number;
-//* dueDate: Date;
-//* isReturned: boolean;
 
 const schema = z.object({
   dueDate: z.date({

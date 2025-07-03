@@ -1,5 +1,5 @@
 import bannerImage from "@/assets/banner.jpg";
-import { useGetAllBooksQuery, type QueryParams } from "@/redux/api/bookApi";
+import { useGetAllBooksQuery, type QueryParams } from "@/redux/api/baseApi";
 
 import {
   Select,
@@ -23,6 +23,7 @@ import {
 import { Eye } from "lucide-react";
 import Banner from "@/components/Banner";
 import AddBorrowModal from "./AddBorrowModal";
+import UpdateBookModal from "./UpdateBookModal";
 
 const defaultValue = {
   filter: "ALL",
@@ -145,6 +146,7 @@ const AllBooks = () => {
                   <TableHead className="text-center">Available</TableHead>
                   <TableHead className="text-center">Borrow</TableHead>
                   <TableHead className="text-center">Details</TableHead>
+                  <TableHead className="text-center">Update</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -165,6 +167,9 @@ const AllBooks = () => {
                       <button className="cursor-pointer text-gray-600">
                         <Eye size={18} />
                       </button>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <UpdateBookModal book={book} />
                     </TableCell>
                   </TableRow>
                 ))}
