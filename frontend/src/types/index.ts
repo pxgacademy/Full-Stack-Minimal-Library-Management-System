@@ -52,10 +52,27 @@ export interface BorrowBookResponse {
   updatedAt: Date;
 }
 
-export interface BorrowSummary {
+export interface BorrowSummaryT {
   totalQuantity: number;
   book: {
     title: string;
     isbn: string;
   };
+}
+
+//
+
+export interface UserInputs {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface UserResponse {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

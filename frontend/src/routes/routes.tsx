@@ -1,5 +1,7 @@
 import AddBooks from "@/pages/addBooks/AddBooks";
 import AllBooks from "@/pages/allBooks/AllBooks";
+import Login from "@/pages/auth/Login";
+import Register from "@/pages/auth/Register";
 import BorrowSummary from "@/pages/borrowSummary/BorrowSummary";
 import Home from "@/pages/home/Home";
 import MyBorrows from "@/pages/myBorrows/MyBorrows";
@@ -25,6 +27,14 @@ export const router = createBrowserRouter([
       {
         path: "my-borrows",
         Component: MyBorrows,
+      },
+      {
+        path: "login",
+        Component: Login,
+      },
+      {
+        path: "register",
+        Component: Register,
       },
     ],
   },

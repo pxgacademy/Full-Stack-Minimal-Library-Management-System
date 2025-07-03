@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { BorrowSummary } from "@/types";
+import type { BorrowSummaryT } from "@/types";
 
 const BorrowSummary = () => {
   const { data, isLoading } = useGetBorrowSummaryQuery("");
@@ -31,7 +31,7 @@ const BorrowSummary = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.data?.map((borrow: BorrowSummary, i: number) => (
+              {data?.data?.map((borrow: BorrowSummaryT, i: number) => (
                 <TableRow key={i}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>{borrow?.book?.title}</TableCell>
