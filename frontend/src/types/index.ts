@@ -18,3 +18,16 @@ export interface CreateBookInputs {
   copies: number;
   available: boolean;
 }
+
+export interface BookResponse {
+  _id: string;
+  title: string;
+  author: string;
+  genre: BookGenre;
+  isbn: string;
+  description: string;
+  copies: number;
+  available: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}

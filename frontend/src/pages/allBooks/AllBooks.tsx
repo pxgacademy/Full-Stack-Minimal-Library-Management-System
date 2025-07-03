@@ -10,8 +10,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { bookGenres } from "@/types";
+import { bookGenres, type BookResponse } from "@/types";
 import { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Eye, ShoppingBag } from "lucide-react";
 
 const defaultValue = {
   filter: "ALL",
@@ -38,7 +48,7 @@ const AllBooks = () => {
   console.log(data);
 
   return (
-    <section className="w-full">
+    <section className="w-full mt-12">
       <div className="w-full max-h-96 overflow-hidden">
         <img
           src={bannerImage}
@@ -126,9 +136,52 @@ const AllBooks = () => {
               </SelectContent>
             </Select>
           </div>
+
+          <div className="mt-6">
+            <Table>
+              <TableHeader className="bg-gray-100">
+                <TableRow>
+                  <TableHead className="w-[100px]">#SN</TableHead>
+                  <TableHead>Genre</TableHead>
+                  <TableHead>ISBN</TableHead>
+                  <TableHead>Author</TableHead>
+                  <TableHead className="text-center">Copies</TableHead>
+                  <TableHead className="text-center">Available</TableHead>
+                  <TableHead className="text-center">Borrow</TableHead>
+                  <TableHead className="text-center">Details</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data?.data?.map((book: BookResponse, i: number) => (
+                  <TableRow key={book._id}>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{book.genre}</TableCell>
+                    <TableCell>{book.isbn}</TableCell>
+                    <TableCell>{book.author}</TableCell>
+                    <TableCell className="text-center">{book.copies}</TableCell>
+                    <TableCell className="text-center">
+                      {book.available ? "🟢" : "🔴"}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <button
+                        className="cursor-pointer disabled:cursor-not-allowed"
+                        disabled={!book.available}
+                      >
+                        <ShoppingBag size={18} />
+                      </button>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <button className="cursor-pointer">
+                        <Eye size={18} />
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </div>
-      <div>Total data: {data?.data.length}</div>
     </section>
   );
 };
