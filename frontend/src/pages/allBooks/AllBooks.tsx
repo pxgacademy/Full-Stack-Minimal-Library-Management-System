@@ -15,7 +15,6 @@ import { useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -49,12 +48,15 @@ const AllBooks = () => {
 
   return (
     <section className="w-full mt-12">
-      <div className="w-full max-h-96 overflow-hidden">
+      <div className="w-full max-h-96 overflow-hidden relative flex items-center justify-center ">
         <img
           src={bannerImage}
           alt="banner"
           className="w-full h-full object-cover"
         />
+        <div className="text-4xl text-white font-bold absolute bg-black/20 p-2 rounded backdrop-blur-sm">
+          <h2>ALL BOOKS</h2>
+        </div>
       </div>
       <div className="px-4 mt-6">
         <div className="container mx-auto">
@@ -164,14 +166,14 @@ const AllBooks = () => {
                     </TableCell>
                     <TableCell className="text-center">
                       <button
-                        className="cursor-pointer disabled:cursor-not-allowed"
+                        className="cursor-pointer disabled:cursor-not-allowed text-gray-600"
                         disabled={!book.available}
                       >
                         <ShoppingBag size={18} />
                       </button>
                     </TableCell>
                     <TableCell className="text-center">
-                      <button className="cursor-pointer">
+                      <button className="cursor-pointer text-gray-600">
                         <Eye size={18} />
                       </button>
                     </TableCell>
