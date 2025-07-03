@@ -24,6 +24,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Banner from "@/components/Banner";
+import { useCreateBookMutation } from "@/redux/api/bookApi";
+import { toast } from "sonner";
 
 const schema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -38,6 +40,9 @@ type AddBookFormSchema = z.infer<typeof schema>;
 
 const AddBooks = () => {
   const [isIsbnLoading, setIsIsbnLoading] = useState(false);
+  const [isBookLoading, setIsBookLoading] = useState(false);
+
+  const [createBook] = useCreateBookMutation();
 
   const form = useForm<AddBookFormSchema>({
     resolver: zodResolver(schema),
@@ -57,7 +62,18 @@ const AddBooks = () => {
       ...data,
       available: true,
     };
-    console.log(newBook);
+
+    setIsBookLoading(true);
+    try {
+      const res = await createBook(newBook).unwrap();
+      console.log(res);
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsBookLoading(false);
+    }
+
     form.reset();
   };
 
@@ -74,6 +90,7 @@ const AddBooks = () => {
   return (
     <section>
       <Banner img={bannerImg2} text="Add Book" />
+
       <div className="px-4 mt-12">
         <Form {...form}>
           <form
@@ -209,8 +226,19 @@ const AddBooks = () => {
             />
 
             <div className="pt-4 flex items-center justify-center">
-              <Button disabled={false} type="submit" className="h-8 py-2">
-                Submit
+              <Button
+                disabled={isBookLoading}
+                type="submit"
+                className="h-8 py-2 disabled:opacity-100 cursor-pointer"
+              >
+                {isBookLoading ? (
+                  <span className="flex items-center gap-x-2">
+                    <LoaderCircle size={18} className="animate-spin" />
+                    Submitting...
+                  </span>
+                ) : (
+                  "Submit"
+                )}
               </Button>
             </div>
           </form>
