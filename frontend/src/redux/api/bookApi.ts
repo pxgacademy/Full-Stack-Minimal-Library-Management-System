@@ -1,13 +1,31 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+export interface QueryParams {
+  filter?: string;
+  sortBy?: string;
+  sort?: "asc" | "desc";
+  limit?: string;
+}
+
 export const bookApi = createApi({
   reducerPath: "bookApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
   endpoints: (builder) => ({
     getAllBooks: builder.query({
-      query: () => `/books`,
+      query: ({ filter, sortBy, sort, limit }: QueryParams) => {
+        const queryParams = new URLSearchParams();
+
+        if (filter && filter !== "ALL") queryParams.append("filter", filter);
+        if (sortBy) queryParams.append("sortBy", sortBy);
+        if (sort) queryParams.append("sort", sort);
+        if (limit && limit !== "all") queryParams.append("limit", limit);
+
+        return `/books?${queryParams.toString()}`;
+      },
     }),
   }),
+
+  //
 });
 
 export const { useGetAllBooksQuery } = bookApi;
