@@ -66,10 +66,11 @@ const AddBooks = () => {
     setIsBookLoading(true);
     try {
       const res = await createBook(newBook).unwrap();
-      console.log(res);
-      toast.success(res.message);
-    } catch (error) {
-      console.log(error);
+      if (res.success) toast.success(res.message);
+      else toast.error(res.message);
+      // eslint-disable-next-line
+    } catch (error: any) {
+      toast.error(error?.data?.message);
     } finally {
       setIsBookLoading(false);
     }

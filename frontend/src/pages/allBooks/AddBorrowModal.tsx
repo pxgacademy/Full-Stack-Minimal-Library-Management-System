@@ -8,17 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
 import { CalendarIcon, LoaderCircle, ShoppingBag } from "lucide-react";
-
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -31,7 +21,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Popover,
   PopoverContent,
@@ -40,7 +29,9 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { BookResponse } from "@/types";
+import type { BookResponse, BorrowBookInputs } from "@/types";
+import { useCreateBorrowMutation } from "@/redux/api/bookApi";
+import { toast } from "sonner";
 
 //* user: string;
 //* book: string;
@@ -62,7 +53,7 @@ export default function AddBorrowModal({ book }: { book: BookResponse }) {
   const [open, setOpen] = useState<boolean>(false);
   const [isBorrowLoading, setIsBorrowLoading] = useState<boolean>(false);
 
-  //   const [createTask, { isLoading }] = useCreateTaskMutation();
+  const [createBorrow] = useCreateBorrowMutation();
 
   //
   const form = useForm<AddBorrowFormSchema>({
@@ -73,12 +64,34 @@ export default function AddBorrowModal({ book }: { book: BookResponse }) {
     },
   });
 
-  // submit handler
-  const onSubmit = async (data) => {
-    // const res = await createTask(newTask).unwrap();
-    // console.log(res);
+  const user = {
+    _id: "6866414258e5d63c3c335b15",
+    // _id: "5d63c3c335b15",
+    name: "alkdj",
+  };
 
-    console.log(data);
+  // submit handler
+  const onSubmit = async (data: AddBorrowFormSchema) => {
+    const newBorrow: BorrowBookInputs = {
+      ...data,
+      user: user._id,
+      book: book._id,
+      isReturned: false,
+    };
+
+    setIsBorrowLoading(true);
+
+    try {
+      const res = await createBorrow(newBorrow).unwrap();
+      if (res.success) toast.success(res.message);
+      else toast.error(res.message);
+      // console.log(res);
+      // eslint-disable-next-line
+    } catch (error: any) {
+      toast.error(error?.data?.message);
+    } finally {
+      setIsBorrowLoading(false);
+    }
 
     setOpen(false);
     form.reset();
@@ -191,6 +204,7 @@ export default function AddBorrowModal({ book }: { book: BookResponse }) {
                         />
                       </PopoverContent>
                     </Popover>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
