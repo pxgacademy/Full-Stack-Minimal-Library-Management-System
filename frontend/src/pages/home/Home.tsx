@@ -11,7 +11,7 @@ function Home() {
     const storedUser = localStorage.getItem("library_user");
     if (storedUser) {
       dispatch(setUser(JSON.parse(storedUser)));
-    }
+    } else dispatch(setUser(null));
   }, [dispatch]);
 
   return (

@@ -32,6 +32,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { BookResponse, BorrowBookInputs } from "@/types";
 import { useCreateBorrowMutation } from "@/redux/api/baseApi";
 import { toast } from "sonner";
+import { useAppSelector } from "@/redux/hook";
+import { selectUser, selectUserLoading } from "@/redux/features/authSlice";
+import { useLocation, useNavigate } from "react-router";
 
 const schema = z.object({
   dueDate: z.date({
@@ -46,8 +49,11 @@ type AddBorrowFormSchema = z.infer<typeof schema>;
 export default function AddBorrowModal({ book }: { book: BookResponse }) {
   const [open, setOpen] = useState<boolean>(false);
   const [isBorrowLoading, setIsBorrowLoading] = useState<boolean>(false);
-
+  const user = useAppSelector(selectUser);
+  const userLoading = useAppSelector(selectUserLoading);
   const [createBorrow] = useCreateBorrowMutation();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   //
   const form = useForm<AddBorrowFormSchema>({
@@ -58,14 +64,11 @@ export default function AddBorrowModal({ book }: { book: BookResponse }) {
     },
   });
 
-  const user = {
-    _id: "6866414258e5d63c3c335b15",
-    // _id: "5d63c3c335b15",
-    name: "alkdj",
-  };
+  if (userLoading) return <div>Loading....</div>;
 
   // submit handler
   const onSubmit = async (data: AddBorrowFormSchema) => {
+    if (!user) return navigate("/login", { state: { goTo: pathname } });
     const newBorrow: BorrowBookInputs = {
       ...data,
       user: user._id,
@@ -90,6 +93,17 @@ export default function AddBorrowModal({ book }: { book: BookResponse }) {
     setOpen(false);
     form.reset();
   };
+
+  if (!user)
+    return (
+      <button
+        onClick={() => navigate("/login", { state: { goTo: pathname } })}
+        className="cursor-pointer disabled:cursor-not-allowed text-gray-600"
+        disabled={!book.available}
+      >
+        <ShoppingBag size={18} />
+      </button>
+    );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

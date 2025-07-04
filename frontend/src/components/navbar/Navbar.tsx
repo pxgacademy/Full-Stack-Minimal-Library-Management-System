@@ -1,9 +1,12 @@
 import { Link, NavLink } from "react-router";
 import { ProfileDropdown } from "./ProfileDropdown";
 import { navLinks } from "./navLinks";
+import { selectUser } from "@/redux/features/authSlice";
+import { useAppSelector } from "@/redux/hook";
+import { Button } from "../ui/button";
 
 const Navbar = () => {
-const 
+  const user = useAppSelector(selectUser);
 
   return (
     <nav className="w-full bg-gray-100/60 backdrop-blur py-2 shadow px-4 fixed top-0 left-0 z-50">
@@ -21,6 +24,16 @@ const
                 {l.name}
               </NavLink>
             ))}
+            {!user && (
+              <Link to="/login">
+                <Button
+                  variant="outline"
+                  className="cursor-pointer shadow-none py-1.5 h-auto"
+                >
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
           <ProfileDropdown />
         </div>
