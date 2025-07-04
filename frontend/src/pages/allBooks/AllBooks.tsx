@@ -25,6 +25,8 @@ import Banner from "@/components/Banner";
 import AddBorrowModal from "./AddBorrowModal";
 import UpdateBookModal from "./UpdateBookModal";
 import UpdateBookCopiesModal from "./UpdateBookCopiesModal";
+import BookDetailsModal from "./BookDetailsModal";
+import { DeleteBookModal } from "./DeleteBookModal";
 
 const defaultValue = {
   filter: "ALL",
@@ -146,6 +148,7 @@ const AllBooks = () => {
                   <TableHead className="text-center">Borrow</TableHead>
                   <TableHead className="text-center">Details</TableHead>
                   <TableHead className="text-center">Update</TableHead>
+                  <TableHead className="text-center">Delete</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -163,12 +166,13 @@ const AllBooks = () => {
                       <AddBorrowModal book={book} />
                     </TableCell>
                     <TableCell className="text-center">
-                      <button className="cursor-pointer text-gray-600">
-                        <Eye size={18} />
-                      </button>
+                      <BookDetailsModal book={book} />
                     </TableCell>
                     <TableCell className="text-center">
                       <UpdateBookModal book={book} />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <DeleteBookModal book={book} />
                     </TableCell>
                   </TableRow>
                 ))}
