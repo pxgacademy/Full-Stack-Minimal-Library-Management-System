@@ -20,7 +20,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Eye } from "lucide-react";
 import Banner from "@/components/Banner";
 import AddBorrowModal from "./AddBorrowModal";
 import UpdateBookModal from "./UpdateBookModal";
