@@ -1,3 +1,4 @@
+import Footer from "@/components/footer/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import { setUser } from "@/redux/features/authSlice";
 import { useAppDispatch } from "@/redux/hook";
@@ -18,6 +19,7 @@ function Home() {
     <>
       <Navbar />
       <Outlet />
+      <Footer />
     </>
   );
 }

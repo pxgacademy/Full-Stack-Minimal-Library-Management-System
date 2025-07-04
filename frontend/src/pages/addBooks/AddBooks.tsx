@@ -98,6 +98,12 @@ const AddBooks = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="max-w-xl mx-auto space-y-3 bg-gray-50 p-5 rounded-lg border border-gray-300"
           >
+            <div>
+              <p className="text-xl font-semibold text-center mb-6">
+                Book Details
+              </p>
+            </div>
+
             <FormField
               control={form.control}
               name="title"
