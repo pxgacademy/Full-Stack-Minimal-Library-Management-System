@@ -1,3 +1,22 @@
+//
+
+export interface UserInputs {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface UserResponse {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+//
+
 export const bookGenres = [
   "FICTION",
   "NON_FICTION",
@@ -44,10 +63,11 @@ export interface BorrowBookInputs {
 
 export interface BorrowBookResponse {
   _id: string;
-  user: string;
+  user: string | UserResponse;
   book: string | BookResponse;
   quantity: number;
   dueDate: Date;
+  isReturned: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -58,21 +78,4 @@ export interface BorrowSummaryT {
     title: string;
     isbn: string;
   };
-}
-
-//
-
-export interface UserInputs {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export interface UserResponse {
-  _id: string;
-  name: string;
-  email: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

@@ -10,6 +10,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://library-management-a4.netlify.app",
+    ],
+    credentials: true,
+  })
+);
+
 // user routes
 app.use("/api/users", userRoutes);
 // book routes
