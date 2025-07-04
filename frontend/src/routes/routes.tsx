@@ -1,5 +1,6 @@
 import AddBooks from "@/pages/addBooks/AddBooks";
 import AllBooks from "@/pages/allBooks/AllBooks";
+import AllBorrows from "@/pages/allBorrows/AllBorrows";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
 import BorrowSummary from "@/pages/borrowSummary/BorrowSummary";
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: "add-books",
         Component: AddBooks,
+      },
+      {
+        path: "all-borrows",
+        Component: AllBorrows,
       },
       {
         path: "borrow-summary",

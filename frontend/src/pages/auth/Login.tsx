@@ -1,5 +1,4 @@
 import bannerL from "@/assets/banner-l.webp";
-import Banner from "@/components/Banner";
 import z from "zod";
 import {
   Form,
@@ -20,6 +19,7 @@ import { useUserLoginMutation } from "@/redux/api/userApi";
 import { useAppDispatch } from "@/redux/hook";
 import { setUser } from "@/redux/features/authSlice";
 import { Link, useLocation, useNavigate } from "react-router";
+import SectionContainer from "@/components/SectionContainer";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -64,6 +64,8 @@ const Login = () => {
 
         navigate(state?.goTo || "/");
 
+        form.reset();
+
         //
       } else toast.error(res.message);
       // eslint-disable-next-line
@@ -72,81 +74,75 @@ const Login = () => {
     } finally {
       setIsUserLoading(false);
     }
-
-    form.reset();
   };
 
   return (
-    <section className="mt-12">
-      <Banner img={bannerL} text="Login" />
+    <SectionContainer img={bannerL} sectionTitle="Login">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="max-w-md mx-auto space-y-3 bg-gray-50 p-5 rounded-lg border border-gray-300"
+        >
+          <div>
+            <p className="text-xl font-semibold text-center mb-5">
+              User Details
+            </p>
+          </div>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="john.doe@mail.com" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="**********" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-      <div className="px-4 mt-8">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="max-w-md mx-auto space-y-3 bg-gray-50 p-5 rounded-lg border border-gray-300"
-          >
-            <div>
-              <p className="text-xl font-semibold text-center mb-5">
-                User Details
-              </p>
-            </div>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="john.doe@mail.com" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+          <div className="pt-4 flex items-center justify-center">
+            <Button
+              disabled={isUserLoading}
+              type="submit"
+              className="h-8 py-2 disabled:opacity-100 cursor-pointer"
+            >
+              {isUserLoading ? (
+                <span className="flex items-center gap-x-2">
+                  <LoaderCircle size={18} className="animate-spin" />
+                  Logging in...
+                </span>
+              ) : (
+                "Log-in"
               )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="**********" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            </Button>
+          </div>
 
-            <div className="pt-4 flex items-center justify-center">
-              <Button
-                disabled={isUserLoading}
-                type="submit"
-                className="h-8 py-2 disabled:opacity-100 cursor-pointer"
-              >
-                {isUserLoading ? (
-                  <span className="flex items-center gap-x-2">
-                    <LoaderCircle size={18} className="animate-spin" />
-                    Logging in...
-                  </span>
-                ) : (
-                  "Log-in"
-                )}
-              </Button>
-            </div>
-
-            <div>
-              <p className="mt-5">
-                Do not have an account? Please{" "}
-                <Link to="/register" className="text-blue-500">
-                  Register
-                </Link>
-              </p>
-            </div>
-          </form>
-        </Form>
-      </div>
-    </section>
+          <div>
+            <p className="mt-5">
+              Do not have an account? Please{" "}
+              <Link to="/register" className="text-blue-500">
+                Register
+              </Link>
+            </p>
+          </div>
+        </form>
+      </Form>
+    </SectionContainer>
   );
 };
 

@@ -23,9 +23,12 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Banner from "@/components/Banner";
 import { useCreateBookMutation } from "@/redux/api/baseApi";
 import { toast } from "sonner";
+import { useAppSelector } from "@/redux/hook";
+import { selectUser } from "@/redux/features/authSlice";
+import LoginAlert from "@/components/LoginAlert";
+import SectionContainer from "@/components/SectionContainer";
 
 const schema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -41,7 +44,7 @@ type AddBookFormSchema = z.infer<typeof schema>;
 const AddBooks = () => {
   const [isIsbnLoading, setIsIsbnLoading] = useState(false);
   const [isBookLoading, setIsBookLoading] = useState(false);
-
+  const user = useAppSelector(selectUser);
   const [createBook] = useCreateBookMutation();
 
   const form = useForm<AddBookFormSchema>({
@@ -89,10 +92,8 @@ const AddBooks = () => {
   };
 
   return (
-    <section>
-      <Banner img={bannerImg2} text="Add Book" />
-
-      <div className="px-4 mt-12">
+    <SectionContainer img={bannerImg2} sectionTitle="Add Book">
+      {user ? (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -250,8 +251,10 @@ const AddBooks = () => {
             </div>
           </form>
         </Form>
-      </div>
-    </section>
+      ) : (
+        <LoginAlert text="To add a book," />
+      )}
+    </SectionContainer>
   );
 };
 
