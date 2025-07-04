@@ -17,6 +17,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useUserLoginMutation } from "@/redux/api/userApi";
+import { useAppDispatch } from "@/redux/hook";
+import { setUser } from "@/redux/features/authSlice";
+import { Link, useLocation, useNavigate } from "react-router";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -32,8 +35,10 @@ type AddUserFormSchema = z.infer<typeof schema>;
 
 const Login = () => {
   const [isUserLoading, setIsUserLoading] = useState(false);
-
+  const dispatch = useAppDispatch();
   const [loginUser] = useUserLoginMutation();
+  const navigate = useNavigate();
+  const { state } = useLocation();
 
   const form = useForm<AddUserFormSchema>({
     resolver: zodResolver(schema),
@@ -48,8 +53,19 @@ const Login = () => {
     setIsUserLoading(true);
     try {
       const res = await loginUser(data).unwrap();
-      if (res.success) toast.success(res.message);
-      else toast.error(res.message);
+      if (res.success) {
+        toast.success(res.message);
+
+        const { _id, name, email } = res.data;
+        const user = { _id, name, email };
+
+        localStorage.setItem("library_user", JSON.stringify(user));
+        dispatch(setUser(user));
+
+        navigate(state?.goTo || "/");
+
+        //
+      } else toast.error(res.message);
       // eslint-disable-next-line
     } catch (error: any) {
       toast.error(error?.data?.message);
@@ -64,12 +80,17 @@ const Login = () => {
     <section className="mt-12">
       <Banner img={bannerL} text="Login" />
 
-      <div className="px-4">
+      <div className="px-4 mt-8">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="max-w-xl mx-auto space-y-3 bg-gray-50 p-5 rounded-lg border border-gray-300"
+            className="max-w-md mx-auto space-y-3 bg-gray-50 p-5 rounded-lg border border-gray-300"
           >
+            <div>
+              <p className="text-xl font-semibold text-center mb-5">
+                User Details
+              </p>
+            </div>
             <FormField
               control={form.control}
               name="email"
@@ -112,6 +133,15 @@ const Login = () => {
                   "Log-in"
                 )}
               </Button>
+            </div>
+
+            <div>
+              <p className="mt-5">
+                Do not have an account? Please{" "}
+                <Link to="/register" className="text-blue-500">
+                  Register
+                </Link>
+              </p>
             </div>
           </form>
         </Form>

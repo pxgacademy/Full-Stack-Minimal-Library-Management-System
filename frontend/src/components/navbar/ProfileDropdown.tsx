@@ -11,8 +11,19 @@ import {
 import { User } from "lucide-react";
 import { Link } from "react-router";
 import { navLinks } from "./navLinks";
+import { useAppDispatch } from "@/redux/hook";
+import { logout } from "@/redux/features/authSlice";
+import { toast } from "sonner";
 
 export function ProfileDropdown() {
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    localStorage.removeItem("library_user");
+    dispatch(logout());
+    toast.success("Logged out successfully");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,7 +56,7 @@ export function ProfileDropdown() {
           ))}
         </DropdownMenuGroup>
 
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

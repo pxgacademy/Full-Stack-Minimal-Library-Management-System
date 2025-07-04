@@ -57,7 +57,7 @@ export const signInUser = async (
   }
 };
 
-// get book by email
+// get user by email
 export const getUserByEmail = async (
   req: Request,
   res: Response,
