@@ -33,20 +33,27 @@ const createBorrow = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 exports.createBorrow = createBorrow;
 // get all borrows //* isReturned=true&sortBy=createdAt&sort=desc&limit=5
 const getAllBorrows = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { isReturned, sortBy = "quantity", sort = "desc", limit = undefined, } = req.query;
+    const { isReturned, sort = "desc" } = req.query;
     const query = {};
     if (isReturned)
         query.isReturned = isReturned === "true" ? true : false;
     const SOrder = sort === "asc" ? 1 : -1;
-    const limitNum = parseInt(limit);
     try {
         let result;
-        if (limit)
+        if (sort !== "random")
             result = yield borrow_models_1.Borrow.find(query)
-                .sort({ [sortBy]: SOrder })
-                .limit(limitNum);
+                .populate({
+                path: "book",
+                select: "title isbn genre",
+            })
+                .sort({
+                quantity: SOrder,
+            });
         else
-            result = yield borrow_models_1.Borrow.find(query).sort({ [sortBy]: SOrder });
+            result = yield borrow_models_1.Borrow.find(query).populate({
+                path: "book",
+                select: "title isbn genre",
+            });
         if (!result) {
             (0, response_1.errorResponse)(res, 404, "Borrow not found", {
                 name: "Error",

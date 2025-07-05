@@ -26,6 +26,7 @@ import UpdateBookCopiesModal from "./UpdateBookCopiesModal";
 import BookDetailsModal from "./BookDetailsModal";
 import { DeleteBookModal } from "./DeleteBookModal";
 import SectionContainer from "@/components/SectionContainer";
+import Loading from "@/components/Loading";
 
 const defaultValue = {
   filter: "ALL",
@@ -47,7 +48,7 @@ const AllBooks = () => {
     }));
   };
 
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <SectionContainer img={bannerImage} sectionTitle="All Books">

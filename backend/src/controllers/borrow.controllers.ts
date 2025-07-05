@@ -68,6 +68,28 @@ export const getAllBorrows = async (
   }
 };
 
+// get borrow by userId
+export const getBorrowById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userId } = req.params;
+
+  try {
+    const id: IDT = checkMongoId(res, userId, "Invalid user id");
+    if (!id) return;
+
+    const result = await Borrow.find({ user: id }).populate({
+      path: "user",
+      select: "title isbn genre",
+    });
+    apiResponse(res, 200, true, "Borrow retrieved successfully", result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // return borrow by ID
 export const updateBorrowById = async (
   req: Request,

@@ -10,11 +10,14 @@ import {
 } from "@/components/ui/table";
 import type { BorrowSummaryT } from "@/types";
 import SectionContainer from "@/components/SectionContainer";
+import Loading from "@/components/Loading";
 
 const BorrowSummary = () => {
   const { data, isLoading } = useGetBorrowSummaryQuery("");
 
-  if (isLoading) return <div>Loading...</div>;
+  console.log(data);
+
+  if (isLoading) return <Loading />;
 
   return (
     <SectionContainer img={bannerImage3} sectionTitle="Borrow Summary">

@@ -12,8 +12,9 @@ import {
 import type { BookResponse } from "@/types";
 import { CircleCheckBig } from "lucide-react";
 import { BorrowReturnModal } from "./BorrowReturnModal";
+import Loading from "@/components/Loading";
 
-interface NewRes {
+export interface NewRes {
   _id: string;
   book: BookResponse;
   quantity: number;
@@ -24,9 +25,8 @@ interface NewRes {
 //
 const AllBorrows = () => {
   const { data, isLoading } = useGetAllBorrowsQuery("");
-  console.log(data);
 
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading) return <Loading />;
   return (
     <SectionContainer img={bannerB} sectionTitle="All Borrows">
       <Table>

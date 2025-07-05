@@ -26,9 +26,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateBookMutation } from "@/redux/api/baseApi";
 import { toast } from "sonner";
 import { useAppSelector } from "@/redux/hook";
-import { selectUser } from "@/redux/features/authSlice";
+import { selectUser, selectUserLoading } from "@/redux/features/authSlice";
 import LoginAlert from "@/components/LoginAlert";
 import SectionContainer from "@/components/SectionContainer";
+import Loading from "@/components/Loading";
 
 const schema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -45,6 +46,7 @@ const AddBooks = () => {
   const [isIsbnLoading, setIsIsbnLoading] = useState(false);
   const [isBookLoading, setIsBookLoading] = useState(false);
   const user = useAppSelector(selectUser);
+  const userLoading = useAppSelector(selectUserLoading);
   const [createBook] = useCreateBookMutation();
 
   const form = useForm<AddBookFormSchema>({
@@ -90,6 +92,8 @@ const AddBooks = () => {
       setIsIsbnLoading(false);
     }, 800);
   };
+
+  if (userLoading) return <Loading />;
 
   return (
     <SectionContainer img={bannerImg2} sectionTitle="Add Book">

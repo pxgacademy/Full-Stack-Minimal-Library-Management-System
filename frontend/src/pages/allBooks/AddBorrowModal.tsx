@@ -35,6 +35,7 @@ import { toast } from "sonner";
 import { useAppSelector } from "@/redux/hook";
 import { selectUser, selectUserLoading } from "@/redux/features/authSlice";
 import { useLocation, useNavigate } from "react-router";
+import Loading from "@/components/Loading";
 
 const schema = z.object({
   dueDate: z.date({
@@ -64,7 +65,7 @@ export default function AddBorrowModal({ book }: { book: BookResponse }) {
     },
   });
 
-  if (userLoading) return <div>Loading....</div>;
+  if (userLoading) return <Loading />;
 
   // submit handler
   const onSubmit = async (data: AddBorrowFormSchema) => {
