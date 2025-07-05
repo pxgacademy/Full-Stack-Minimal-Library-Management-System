@@ -124,5 +124,5 @@ html {
 }
 
 .active {
-  @apply text-blue-500;
+  @apply text-blue-600;
 }
