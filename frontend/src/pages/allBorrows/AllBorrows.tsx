@@ -10,9 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { BookResponse } from "@/types";
-import { CircleCheckBig, CircleX } from "lucide-react";
+import { CircleCheckBig } from "lucide-react";
+import { BorrowReturnModal } from "./BorrowReturnModal";
 
 interface NewRes {
+  _id: string;
   book: BookResponse;
   quantity: number;
   dueDate: Date;
@@ -22,6 +24,7 @@ interface NewRes {
 //
 const AllBorrows = () => {
   const { data, isLoading } = useGetAllBorrowsQuery("");
+  console.log(data);
 
   if (isLoading) return <div>Loading</div>;
   return (
@@ -34,23 +37,32 @@ const AllBorrows = () => {
             <TableHead>ISBN</TableHead>
             <TableHead className="text-center">Quantity</TableHead>
             <TableHead>Due Date</TableHead>
-            <TableHead>Is Returned</TableHead>
+            <TableHead className="text-center">Is Returned</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data?.data?.map(
-            ({ book, quantity, dueDate, isReturned }: NewRes, i: number) => (
+            (
+              { _id, book, quantity, dueDate, isReturned }: NewRes,
+              i: number
+            ) => (
               <TableRow key={i}>
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>{book?.title}</TableCell>
                 <TableCell>{book?.isbn}</TableCell>
                 <TableCell className="text-center">{quantity}</TableCell>
                 <TableCell>{dueDate.toString()}</TableCell>
-                <TableCell>
+                <TableCell className="flex justify-center">
                   {isReturned ? (
                     <CircleCheckBig size={18} className="text-green-500" />
                   ) : (
-                    <CircleX size={18} className="text-red-500" />
+                    <BorrowReturnModal
+                      id={_id}
+                      title={book.title}
+                      isbn={book.isbn}
+                      quantity={quantity}
+                      dueDate={dueDate}
+                    />
                   )}
                 </TableCell>
               </TableRow>

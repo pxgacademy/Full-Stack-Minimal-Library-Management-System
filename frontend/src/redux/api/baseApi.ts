@@ -9,10 +9,10 @@ export interface QueryParams {
 
 export const bookApi = createApi({
   reducerPath: "bookApi",
-  // baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://a4-library-management.vercel.app/api",
-  }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
+  // baseQuery: fetchBaseQuery({
+  //   baseUrl: "https://a4-library-management.vercel.app/api",
+  // }),
   tagTypes: ["BOOK", "BORROW"],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
@@ -65,12 +65,12 @@ export const bookApi = createApi({
     }),
 
     getAllBorrows: builder.query({
-      query: () => "borrow",
+      query: () => "/borrow",
       providesTags: ["BORROW"],
     }),
 
     getBorrowSummary: builder.query({
-      query: () => "borrow/summary",
+      query: () => "/borrow/summary",
       providesTags: ["BORROW"],
     }),
 
@@ -81,6 +81,15 @@ export const bookApi = createApi({
         body,
       }),
       invalidatesTags: ["BOOK", "BORROW"],
+    }),
+
+    updateBorrowReturn: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `/borrow/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: ["BORROW"],
     }),
   }),
 
@@ -96,4 +105,5 @@ export const {
   useGetAllBorrowsQuery,
   useGetBorrowSummaryQuery,
   useCreateBorrowMutation,
+  useUpdateBorrowReturnMutation,
 } = bookApi;

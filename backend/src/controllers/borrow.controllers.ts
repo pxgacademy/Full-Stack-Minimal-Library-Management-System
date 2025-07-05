@@ -31,25 +31,28 @@ export const getAllBorrows = async (
   res: Response,
   next: NextFunction
 ) => {
-  const {
-    isReturned,
-    sortBy = "quantity",
-    sort = "desc",
-    limit = undefined,
-  } = req.query;
+  const { isReturned, sort = "desc" } = req.query;
   const query: Record<string, boolean> = {};
   if (isReturned) query.isReturned = isReturned === "true" ? true : false;
   const SOrder = sort === "asc" ? 1 : -1;
-  const limitNum = parseInt(limit as string);
 
   try {
     let result;
 
-    if (limit)
+    if (sort !== "random")
       result = await Borrow.find(query)
-        .sort({ [sortBy as string]: SOrder })
-        .limit(limitNum);
-    else result = await Borrow.find(query).sort({ [sortBy as string]: SOrder });
+        .populate({
+          path: "book",
+          select: "title isbn genre",
+        })
+        .sort({
+          quantity: SOrder,
+        });
+    else
+      result = await Borrow.find(query).populate({
+        path: "book",
+        select: "title isbn genre",
+      });
 
     if (!result) {
       errorResponse(res, 404, "Borrow not found", {
